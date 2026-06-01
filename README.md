@@ -1,59 +1,179 @@
-Breast Cancer Diagnosis Prediction Using Classification Algorithms
+# Breast Cancer Diagnosis Prediction Using Machine Learning
 
-TLDR
+## TLDR
 
-This project compares machine learning models for predicting whether breast tumors are benign or malignant using biopsy image features. The analysis demonstrates how different classification algorithms perform on the same medical prediction task and highlights the importance of evaluating models using metrics such as sensitivity and specificity, not just accuracy.
+Compared machine learning algorithms for predicting whether breast tumors are benign or malignant using biopsy image features from the Wisconsin Diagnostic Breast Cancer dataset.
 
-Overview
+### Key Results
 
-Machine learning is increasingly used to assist medical diagnostics by identifying patterns in clinical or imaging data that help predict disease outcomes.
+- Random Forest: **97.1% accuracy**, **95.2% sensitivity**, **98.1% specificity**, **0.992 AUC**
+- Logistic Regression: **94.7% accuracy**, **93.7% sensitivity**, **95.3% specificity**, **0.963 AUC**
+- Random Forest outperformed Logistic Regression across all evaluation metrics and achieved near-perfect discrimination between malignant and benign tumors.
 
-In this project I analyze the Wisconsin Diagnostic Breast Cancer dataset, a widely used benchmark dataset containing biopsy measurements extracted from digitized images of breast mass tissue samples. The dataset contains 569 samples and 30 numerical features describing characteristics of cell nuclei.
+This project demonstrates how different classification approaches perform on structured biomedical data and highlights why medical models should be evaluated using sensitivity, specificity, and AUC rather than accuracy alone.
 
-The objective is to train classification models that predict whether a tumor is benign or malignant.
+---
 
-Beyond simply fitting a model, the goal is to compare several algorithms and examine how modeling decisions affect diagnostic performance.
+## Overview
 
-Dataset
+Machine learning is increasingly used to support medical diagnosis by identifying patterns in clinical and imaging data that may not be obvious through manual review alone.
 
-Source: Wisconsin Diagnostic Breast Cancer dataset
+In this project, I analyze the Wisconsin Diagnostic Breast Cancer dataset, a widely used benchmark dataset containing measurements extracted from digitized images of breast tissue samples. The objective is to predict whether a tumor is benign or malignant based on cellular characteristics observed in biopsy images.
 
-569 biopsy samples
-30 numerical features describing cell nuclei properties
-Binary outcome: malignant vs benign
+Rather than focusing on a single model, the project compares multiple classification approaches and evaluates their ability to correctly identify malignant tumors while minimizing false alarms.
 
-The features represent measurements such as cell radius, perimeter, smoothness, concavity, and symmetry derived from microscopic imaging of tissue samples.
+---
 
-Modeling workflow
+## Dataset
 
-The project follows a standard applied machine learning workflow:
+**Source:** Wisconsin Diagnostic Breast Cancer Dataset
 
-data exploration and feature inspection
-train/test dataset split
-model training using multiple algorithms
-model evaluation on unseen data
+- 569 biopsy samples
+- 30 numerical predictor variables
+- Binary outcome:
+  - Benign (B)
+  - Malignant (M)
 
-Performance is evaluated using several metrics, including:
+Features describe characteristics of cell nuclei extracted from digitized microscope images, including:
 
-accuracy
-sensitivity (true positive rate)
-specificity (true negative rate)
+- Radius
+- Perimeter
+- Texture
+- Smoothness
+- Compactness
+- Concavity
+- Symmetry
+- Fractal Dimension
 
-In a medical context these metrics have different implications. High sensitivity helps avoid missing malignant cases, while high specificity reduces unnecessary follow-up procedures.
+Example variables:
 
-Key takeaway
+- `radius_mean`
+- `perimeter_worst`
+- `concavity_worst`
+- `concave.points_worst`
 
-Even with a relatively small dataset, several machine learning algorithms can achieve strong predictive performance when trained on meaningful biomedical features.
+---
 
-More importantly, comparing models and evaluating error tradeoffs provides better insight than relying on a single algorithm.
+## Modeling Workflow
 
-Tools used
+The analysis follows a standard supervised machine learning workflow:
 
-R
-tidyverse
-caret
-classification algorithms implemented in R
+1. Data preparation and validation
+2. Removal of identifier fields
+3. Stratified 70/30 train-test split
+4. Feature scaling where appropriate
+5. Model training
+6. Out-of-sample evaluation
+7. Comparison of diagnostic performance
 
-Repository contents
+### Models Evaluated
 
-breast cancer classification.R – code used to train and evaluate the models
+- Logistic Regression
+- Random Forest
+
+Additional experiments were conducted using XGBoost, K-Nearest Neighbors, and Neural Networks, though the strongest performance was achieved using Random Forest.
+
+---
+
+## Results
+
+| Model | Accuracy | Sensitivity | Specificity | AUC |
+|---------|---------|---------|---------|---------|
+| Logistic Regression | 94.7% | 93.7% | 95.3% | 0.963 |
+| Random Forest | 97.1% | 95.2% | 98.1% | 0.992 |
+
+### Best Performing Model
+
+**Random Forest** achieved the strongest overall performance:
+
+- 97.1% accuracy
+- 95.2% sensitivity
+- 98.1% specificity
+- 0.992 AUC
+
+An AUC of 0.992 indicates that the model almost always ranks malignant tumors above benign tumors regardless of the classification threshold.
+
+---
+
+## Why Sensitivity and Specificity Matter
+
+Medical classification problems require more than accuracy.
+
+### Sensitivity (True Positive Rate)
+
+Measures the ability to correctly identify malignant tumors.
+
+High sensitivity reduces the risk of missing cancer cases.
+
+### Specificity (True Negative Rate)
+
+Measures the ability to correctly identify benign tumors.
+
+High specificity reduces unnecessary follow-up testing and patient anxiety.
+
+### AUC (Area Under the ROC Curve)
+
+Measures how well the model ranks malignant cases above benign cases across all possible classification thresholds.
+
+A higher AUC indicates stronger overall discrimination.
+
+---
+
+## Feature Importance
+
+Random Forest feature importance analysis identified several measurements related to tumor size and boundary irregularity as the strongest predictors of malignancy.
+
+Common high-importance variables included:
+
+- Radius
+- Perimeter
+- Area
+- Concavity
+- Concave Points
+
+These findings are consistent with established clinical indicators used in breast cancer diagnosis.
+
+---
+
+## Key Takeaways
+
+- Both Logistic Regression and Random Forest achieved strong diagnostic performance.
+- Random Forest outperformed Logistic Regression across all evaluation metrics.
+- Ensemble tree-based methods proved highly effective for structured biomedical data.
+- Sensitivity, specificity, and AUC provide a more complete evaluation framework than accuracy alone.
+- Feature importance analysis helped identify the tumor characteristics most associated with malignancy.
+
+---
+
+## Tools Used
+
+- R
+- tidyverse
+- caret
+- randomForest
+- pROC
+- xgboost
+- keras
+- tensorflow
+
+---
+
+## Repository Contents
+
+- `breast_cancer_classification.R` — data preparation, model training, and evaluation
+- `README.md` — project documentation
+
+---
+
+## Skills Demonstrated
+
+- Classification Modeling
+- Model Evaluation
+- Random Forest
+- Logistic Regression
+- Feature Importance Analysis
+- Sensitivity / Specificity Analysis
+- ROC Curves and AUC
+- Predictive Analytics
+- Healthcare Analytics
+- R Programming
